@@ -1,0 +1,8 @@
+{
+  "projectname": "mock",
+  "problem": "creates mock data to feed to any crud api ",
+  "target": "developers",
+  "platform": "cli",
+  "teamsize": 1,
+  "createdat": "2026-07-13T06:31:06.233Z"
+}

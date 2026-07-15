@@ -1,0 +1,33 @@
+{
+  "phaseArray": [
+    {
+      "phase": "1",
+      "name": "argumentRead",
+      "milestones": [
+        "fieldsReading",
+        "countReading",
+        "flagReading"
+      ]
+    },
+    {
+      "phase": "2",
+      "name": "dataFile",
+      "milestones": [
+        "name",
+        "city",
+        "email",
+        "number",
+        "password"
+      ]
+    },
+    {
+      "phase": "3",
+      "name": "output",
+      "milestones": [
+        "json",
+        "csv"
+      ]
+    }
+  ],
+  "createdAt": "2026-07-15T12:47:50.531Z"
+}

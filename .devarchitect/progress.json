@@ -1,0 +1,14 @@
+[
+  {
+    "commandRunCount": 1,
+    "currentPhase": "argumentRead",
+    "completedMilestones": [
+      "fieldsReading",
+      "countReading",
+      "flagReading"
+    ],
+    "blockers": "none",
+    "completion": "25%",
+    "recordedAt": "2026-07-15T12:50:51.160Z"
+  }
+]

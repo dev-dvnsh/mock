@@ -1,0 +1,8 @@
+[
+  {
+    "what": "use go",
+    "why": "single binary",
+    "alternatives": "node, python, c",
+    "decidedAt": "2026-07-15T12:49:40.766Z"
+  }
+]
