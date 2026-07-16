@@ -3,10 +3,45 @@ package main
 import (
 	"fmt"
 	"log"
+	"math/rand/v2"
 	"os"
 	"strconv"
 	"strings"
 )
+
+func generateName() string {
+	randomInt1 := rand.IntN(50)
+	randomInt2 := rand.IntN(50)
+	name := FirstName[randomInt1] + " " + LastName[randomInt2]
+	return name
+}
+
+var name = generateName()
+
+func generateEmail() string {
+	nameSlice := strings.Split(name, " ")
+	var strNum strings.Builder
+	for range 5 {
+		num := rand.IntN(10)
+		strNum.WriteString(strconv.Itoa(num))
+	}
+
+	email := strings.ToLower(nameSlice[0]) + string(strings.ToLower(nameSlice[1])[0]) + strNum.String() + "@gmail.com"
+	return email
+}
+
+func generateAge() int {
+	max := 65
+	min := 18
+	return rand.IntN(max-min) + min
+}
+
+// func generate(schemaField string) string{
+// 	switch(schemaField){
+// 	case "name":
+// 	return
+// 	}
+// }
 
 func main() {
 	// cmd := os.Args[0]
@@ -47,4 +82,8 @@ func main() {
 			fmt.Println("Output File Name: ", outputFileName)
 		}
 	}
+
+	fmt.Println(name)
+	fmt.Println(generateEmail())
+	fmt.Println(generateAge())
 }

@@ -1,6 +1,6 @@
 package main
 
-var firstName = []string{
+var FirstName = []string{
 	"John",
 	"Alex",
 	"Tony",
@@ -53,7 +53,7 @@ var firstName = []string{
 	"Ethan",
 }
 
-var lastName = []string{
+var LastName = []string{
 	"Smith",
 	"Johnson",
 	"Williams",

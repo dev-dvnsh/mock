@@ -1,0 +1,19 @@
+[
+  {
+    "commandRunCount": 1,
+    "currentPhase": "argumentRead",
+    "completedMilestones": ["fieldsReading", "countReading", "flagReading"],
+    "blockers": "none",
+    "completion": "100%",
+    "recordedAt": "2026-07-15T12:50:51.160Z"
+  },
+  {
+    "commandRunCount": 2,
+    "currentPhase": "dataFile",
+    "completedMilestones": ["name", "city"],
+    "blockers": "none",
+    "completion": "50%",
+    "recordedAt": "2026-07-15T13:12:44.389Z"
+  }
+]
+

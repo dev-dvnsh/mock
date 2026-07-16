@@ -8,7 +8,7 @@
       "flagReading"
     ],
     "blockers": "none",
-    "completion": "25%",
+    "completion": "100%",
     "recordedAt": "2026-07-15T12:50:51.160Z"
   },
   {
@@ -21,5 +21,16 @@
     "blockers": "none",
     "completion": "50%",
     "recordedAt": "2026-07-15T13:12:44.389Z"
+  },
+  {
+    "commandRunCount": 3,
+    "currentPhase": "dataFile",
+    "completedMilestones": [
+      "name",
+      "email"
+    ],
+    "blockers": "none",
+    "completion": "50%",
+    "recordedAt": "2026-07-16T03:43:53.084Z"
   }
 ]
