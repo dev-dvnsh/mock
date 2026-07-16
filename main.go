@@ -36,6 +36,27 @@ func generateAge() int {
 	return rand.IntN(max-min) + min
 }
 
+func generateAddress() string {
+	randomInt := rand.IntN(50)
+	city := Addresses[randomInt].City
+	country := Addresses[randomInt].Country
+	addressString := city + ", " + country
+	return addressString
+}
+
+func generateUUID() string {
+	// xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+	// 8-4-4-4-12
+	randNum1 := rand.Uint32()
+	randNum2 := rand.Uint32()
+	randNum3 := rand.Uint32()
+	randNum4 := rand.Uint32()
+	hexString := fmt.Sprintf("%x%x%x%x", randNum1, randNum2, randNum3, randNum4)
+	uuid := hexString[0:8] + "-" + hexString[8:12] + "-" + hexString[12:16] + "-" + hexString[16:20] + "-" + hexString[20:]
+
+	return uuid
+}
+
 // func generate(schemaField string) string{
 // 	switch(schemaField){
 // 	case "name":
@@ -86,4 +107,6 @@ func main() {
 	fmt.Println(name)
 	fmt.Println(generateEmail())
 	fmt.Println(generateAge())
+	fmt.Println(generateAddress())
+	fmt.Println(generateUUID())
 }
