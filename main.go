@@ -57,6 +57,17 @@ func generateUUID() string {
 	return uuid
 }
 
+func generatePhone() string {
+	var strPNum strings.Builder
+
+	for range 10 {
+		num := rand.IntN(10)
+		strPNum.WriteString(strconv.Itoa(num))
+	}
+	phoneNumber := "+91-" + strPNum.String()
+	return phoneNumber
+}
+
 // func generate(schemaField string) string{
 // 	switch(schemaField){
 // 	case "name":
@@ -109,4 +120,5 @@ func main() {
 	fmt.Println(generateAge())
 	fmt.Println(generateAddress())
 	fmt.Println(generateUUID())
+	fmt.Println(generatePhone())
 }
