@@ -99,12 +99,34 @@ func generatePassword(length int) string {
 	return result.String()
 }
 
-// func generate(schemaField string) string{
-// 	switch(schemaField){
-// 	case "name":
-// 	return
-// 	}
-// }
+func generate(schemaField string) {
+	switch schemaField {
+	case "name":
+		generateName()
+		fallthrough
+	case "email":
+		generateEmail()
+		fallthrough
+	case "age":
+
+		generateAge()
+		fallthrough
+	case "address":
+		generateAddress()
+		fallthrough
+	case "uuid":
+		generateUUID()
+		fallthrough
+	case "phone":
+		generatePhone()
+	case "bool":
+		generateBool()
+	case "int":
+		generateInt()
+	default:
+		generateDefault([]string{"name"})
+	}
+}
 
 func main() {
 	// cmd := os.Args[0]
