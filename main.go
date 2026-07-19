@@ -68,6 +68,37 @@ func generatePhone() string {
 	return phoneNumber
 }
 
+func generateBool() bool {
+	randNum := rand.IntN(2)
+	if randNum == 0 {
+		return false
+	} else {
+		return true
+	}
+}
+
+func generateInt() int {
+	randNum := rand.IntN(9000) + 1000
+	return randNum
+}
+
+func generateDefault(field []string) string {
+	fieldString := strings.Join(field, ", ")
+	fmt.Fprintln(os.Stderr, fieldString+" not recognised, use help for field names")
+	return "unknown"
+}
+
+const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
+func generatePassword(length int) string {
+	var result strings.Builder
+	for range length {
+		index := rand.IntN(len(charset))
+		result.WriteByte(charset[index])
+	}
+	return result.String()
+}
+
 // func generate(schemaField string) string{
 // 	switch(schemaField){
 // 	case "name":
@@ -121,4 +152,8 @@ func main() {
 	fmt.Println(generateAddress())
 	fmt.Println(generateUUID())
 	fmt.Println(generatePhone())
+	fmt.Println(generateBool())
+	fmt.Println(generateInt())
+	fmt.Println(generateDefault([]string{"name"}))
+	fmt.Println(generatePassword(8))
 }

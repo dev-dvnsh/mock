@@ -45,32 +45,5 @@
     "blockers": "none",
     "completion": "75%",
     "recordedAt": "2026-07-17T17:44:39.010Z"
-  },
-  {
-    "commandRunCount": 5,
-    "currentPhase": "dataFile",
-    "completedMilestones": [
-      "name",
-      "city",
-      "email",
-      "number"
-    ],
-    "blockers": "none",
-    "completion": "75%",
-    "recordedAt": "2026-07-19T16:20:40.000Z"
-  },
-  {
-    "commandRunCount": 6,
-    "currentPhase": "dataFile",
-    "completedMilestones": [
-      "name",
-      "city",
-      "email",
-      "number",
-      "password"
-    ],
-    "blockers": "none",
-    "completion": "100%",
-    "recordedAt": "2026-07-19T16:31:11.509Z"
   }
 ]
