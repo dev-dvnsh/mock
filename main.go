@@ -16,9 +16,7 @@ func generateName() string {
 	return name
 }
 
-var name = generateName()
-
-func generateEmail() string {
+func generateEmail(name string) string {
 	nameSlice := strings.Split(name, " ")
 	var strNum strings.Builder
 	for range 5 {
@@ -36,13 +34,13 @@ func generateAge() int {
 	return rand.IntN(max-min) + min
 }
 
-func generateAddress() string {
-	randomInt := rand.IntN(50)
-	city := Addresses[randomInt].City
-	country := Addresses[randomInt].Country
-	addressString := city + ", " + country
-	return addressString
-}
+// func generateAddress() string {
+// 	randomInt := rand.IntN(50)
+// 	city := Addresses[randomInt].City
+// 	country := Addresses[randomInt].Country
+// 	addressString := city + ", " + country
+// 	return addressString
+// }
 
 func generateUUID() string {
 	// xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
@@ -84,8 +82,9 @@ func generateInt() int {
 
 func generateDefault(field []string) string {
 	fieldString := strings.Join(field, ", ")
-	fmt.Fprintln(os.Stderr, fieldString+" not recognised, use help for field names")
-	return "unknown"
+	// fmt.Fprintln(os.Stderr, fieldString+" not recognised, use help for field names")
+	returnString := fieldString + " not recognised, use help for field names"
+	return returnString
 }
 
 const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
@@ -99,32 +98,34 @@ func generatePassword(length int) string {
 	return result.String()
 }
 
-func generate(schemaField string) {
+func generate(schemaField string, name string) string {
 	switch schemaField {
 	case "name":
-		generateName()
-		fallthrough
+		return generateName()
 	case "email":
-		generateEmail()
-		fallthrough
+		return generateEmail(name)
 	case "age":
-
-		generateAge()
-		fallthrough
-	case "address":
-		generateAddress()
-		fallthrough
+		return strconv.Itoa(generateAge())
+	case "city":
+		lastAddressIndex = rand.IntN(len(Addresses))
+		return Addresses[lastAddressIndex].City
+	case "country":
+		return Addresses[lastAddressIndex].Country
+	case "date":
+		year := rand.IntN(2024-1980) + 1980
+		month := rand.IntN(12) + 1
+		day := rand.IntN(28) + 1
+		return fmt.Sprintf("%d-%02d-%02d", year, month, day)
 	case "uuid":
-		generateUUID()
-		fallthrough
+		return generateUUID()
 	case "phone":
-		generatePhone()
+		return generatePhone()
 	case "bool":
-		generateBool()
+		return strconv.FormatBool(generateBool())
 	case "int":
-		generateInt()
+		return strconv.Itoa(generateInt())
 	default:
-		generateDefault([]string{"name"})
+		return generateDefault([]string{schemaField})
 	}
 }
 
@@ -132,23 +133,28 @@ func main() {
 	// cmd := os.Args[0]
 	// fmt.Println(cmd)
 	if len(os.Args) <= 2 {
-		fmt.Println("pass atleast 2 arguments after mock like mock name 10")
+		fmt.Println("Usage: mock \"<fields>\" <count> [--format json|csv] [--output filename]\nExample: mock \"name, email, age\" 100 --format csv")
 		os.Exit(0)
 	}
 
 	cmdArgs := os.Args[1]
 	// fmt.Println(cmdArgs)
-	schema := strings.Split(cmdArgs, " ")
+	schema := strings.Split(cmdArgs, ",")
+	for i := 0; i < len(schema); i++ {
+		schema[i] = strings.TrimSpace(schema[i])
+	}
 
 	cmd1 := os.Args[2]
 
 	num, err := strconv.Atoi(cmd1)
 	if err != nil {
 		log.Fatalf("Failed to convert: %v", err)
-		os.Exit(0)
 	}
 	fmt.Println(schema)
 	fmt.Println(num)
+
+	format := "json"
+	outputFile := ""
 	for i := 3; i < len(os.Args); i++ {
 		// fmt.Println(os.Args[i])
 		// if os.Args[i][0:2] == "--" {
@@ -156,26 +162,38 @@ func main() {
 		// }
 		if os.Args[i] == "--format" {
 			fmt.Println("--found found")
-			fileType := strings.TrimSpace(os.Args[i+1])
-
-			fmt.Println("File Type: ", fileType)
+			if i+1 < len(os.Args) {
+				format = strings.TrimSpace(os.Args[i+1])
+			} else {
+				fmt.Println("Error: --format requires a value")
+				os.Exit(1)
+			}
+			fmt.Println("File Type: ", format)
 		}
 		if os.Args[i] == "--output" {
-			fmt.Println("--output found")
-			outputFileName := strings.TrimSpace(os.Args[i+1])
 
-			fmt.Println("Output File Name: ", outputFileName)
+			fmt.Println("--output found")
+			if i+1 < len(os.Args) {
+				outputFile = strings.TrimSpace(os.Args[i+1])
+			} else {
+				fmt.Println("Error: --output requires a value")
+				os.Exit(1)
+			}
+
+			fmt.Println("Output File Name: ", outputFile)
 		}
 	}
 
-	fmt.Println(name)
-	fmt.Println(generateEmail())
+	testName := generateName()
+
+	fmt.Println(testName)
+	fmt.Println(generateEmail(testName))
 	fmt.Println(generateAge())
-	fmt.Println(generateAddress())
 	fmt.Println(generateUUID())
 	fmt.Println(generatePhone())
 	fmt.Println(generateBool())
 	fmt.Println(generateInt())
 	fmt.Println(generateDefault([]string{"name"}))
 	fmt.Println(generatePassword(8))
+	fmt.Println(generate("emai", "John Smith"))
 }

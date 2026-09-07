@@ -106,6 +106,8 @@ var LastName = []string{
 	"Sharma",
 }
 
+var lastAddressIndex int
+
 type address struct {
 	City    string
 	Country string
