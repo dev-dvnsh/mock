@@ -34,17 +34,7 @@ func generateAge() int {
 	return rand.IntN(max-min) + min
 }
 
-// func generateAddress() string {
-// 	randomInt := rand.IntN(50)
-// 	city := Addresses[randomInt].City
-// 	country := Addresses[randomInt].Country
-// 	addressString := city + ", " + country
-// 	return addressString
-// }
-
 func generateUUID() string {
-	// xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-	// 8-4-4-4-12
 	randNum1 := rand.Uint32()
 	randNum2 := rand.Uint32()
 	randNum3 := rand.Uint32()
@@ -82,7 +72,6 @@ func generateInt() int {
 
 func generateDefault(field []string) string {
 	fieldString := strings.Join(field, ", ")
-	// fmt.Fprintln(os.Stderr, fieldString+" not recognised, use help for field names")
 	returnString := fieldString + " not recognised, use help for field names"
 	return returnString
 }
@@ -124,6 +113,8 @@ func generate(schemaField string, name string) string {
 		return strconv.FormatBool(generateBool())
 	case "int":
 		return strconv.Itoa(generateInt())
+	case "password":
+		return generatePassword(8)
 	default:
 		return generateDefault([]string{schemaField})
 	}
@@ -140,7 +131,7 @@ func main() {
 	cmdArgs := os.Args[1]
 	// fmt.Println(cmdArgs)
 	schema := strings.Split(cmdArgs, ",")
-	for i := 0; i < len(schema); i++ {
+	for i := range schema {
 		schema[i] = strings.TrimSpace(schema[i])
 	}
 
@@ -150,18 +141,13 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to convert: %v", err)
 	}
-	fmt.Println(schema)
-	fmt.Println(num)
 
 	format := "json"
 	outputFile := ""
+
 	for i := 3; i < len(os.Args); i++ {
-		// fmt.Println(os.Args[i])
-		// if os.Args[i][0:2] == "--" {
-		// 	fmt.Println("found")
-		// }
+
 		if os.Args[i] == "--format" {
-			fmt.Println("--found found")
 			if i+1 < len(os.Args) {
 				format = strings.TrimSpace(os.Args[i+1])
 			} else {
@@ -172,7 +158,6 @@ func main() {
 		}
 		if os.Args[i] == "--output" {
 
-			fmt.Println("--output found")
 			if i+1 < len(os.Args) {
 				outputFile = strings.TrimSpace(os.Args[i+1])
 			} else {
@@ -182,18 +167,15 @@ func main() {
 
 			fmt.Println("Output File Name: ", outputFile)
 		}
+
 	}
-
-	testName := generateName()
-
-	fmt.Println(testName)
-	fmt.Println(generateEmail(testName))
-	fmt.Println(generateAge())
-	fmt.Println(generateUUID())
-	fmt.Println(generatePhone())
-	fmt.Println(generateBool())
-	fmt.Println(generateInt())
-	fmt.Println(generateDefault([]string{"name"}))
-	fmt.Println(generatePassword(8))
-	fmt.Println(generate("emai", "John Smith"))
+	records := []map[string]string{}
+	for range num {
+		record := map[string]string{}
+		for _, field := range schema {
+			record[field] = generate(field, "")
+		}
+		records = append(records, record)
+	}
+	fmt.Println(records[0])
 }
