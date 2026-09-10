@@ -141,6 +141,10 @@ Supported fields: name, email, age, phone, city, country, uuid, date, bool, int,
 	}
 
 	cmdArgs := os.Args[1]
+	if cmdArgs == "" {
+		fmt.Println("Error: schema cannot be empty")
+		os.Exit(1)
+	}
 	// fmt.Println(cmdArgs)
 	schema := strings.Split(cmdArgs, ",")
 	for i := range schema {
@@ -153,7 +157,10 @@ Supported fields: name, email, age, phone, city, country, uuid, date, bool, int,
 	if err != nil {
 		log.Fatalf("Failed to convert: %v", err)
 	}
-
+	if num <= 0 {
+		fmt.Println("Error: count must be greater than 0")
+		os.Exit(1)
+	}
 	format := "json"
 	outputFile := ""
 	for i := 3; i < len(os.Args); i++ {
@@ -175,6 +182,10 @@ Supported fields: name, email, age, phone, city, country, uuid, date, bool, int,
 			}
 		}
 
+	}
+	if format != "json" && format != "csv" {
+		fmt.Println("Error: format must be json or csv")
+		os.Exit(1)
 	}
 	records := []map[string]string{}
 	for range num {
