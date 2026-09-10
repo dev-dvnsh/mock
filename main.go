@@ -1,6 +1,8 @@
 package main
 
 import (
+	"encoding/csv"
+	"encoding/json"
 	"fmt"
 	"log"
 	"math/rand/v2"
@@ -121,6 +123,16 @@ func generate(schemaField string, name string) string {
 }
 
 func main() {
+	if len(os.Args) > 1 && (os.Args[1] == "--help" || os.Args[1] == "-h") {
+		fmt.Println(`Usage: mock "<fields>" <count> [--format json|csv] [--output filename]
+Generate fake data from a schema.
+Examples:
+  mock "name, email, age" 100
+  mock "name, email, age" 50 --format csv
+  mock "name, uuid, date" 20 --output data.json
+Supported fields: name, email, age, phone, city, country, uuid, date, bool, int, password`)
+		os.Exit(0)
+	}
 	// cmd := os.Args[0]
 	// fmt.Println(cmd)
 	if len(os.Args) <= 2 {
@@ -144,7 +156,6 @@ func main() {
 
 	format := "json"
 	outputFile := ""
-
 	for i := 3; i < len(os.Args); i++ {
 
 		if os.Args[i] == "--format" {
@@ -154,28 +165,73 @@ func main() {
 				fmt.Println("Error: --format requires a value")
 				os.Exit(1)
 			}
-			fmt.Println("File Type: ", format)
 		}
 		if os.Args[i] == "--output" {
-
 			if i+1 < len(os.Args) {
 				outputFile = strings.TrimSpace(os.Args[i+1])
 			} else {
 				fmt.Println("Error: --output requires a value")
 				os.Exit(1)
 			}
-
-			fmt.Println("Output File Name: ", outputFile)
 		}
 
 	}
 	records := []map[string]string{}
 	for range num {
 		record := map[string]string{}
+		name := ""
 		for _, field := range schema {
-			record[field] = generate(field, "")
+			switch field {
+			case "name":
+				name = generate(field, "")
+				record[field] = name
+			case "email":
+				record[field] = generate(field, name)
+			default:
+				record[field] = generate(field, "")
+			}
 		}
 		records = append(records, record)
 	}
-	fmt.Println(records[0])
+	if format == "json" {
+		jsonData, err := json.MarshalIndent(records, "", " ")
+		if err != nil {
+			fmt.Println("Error marshaling JSON:", err)
+			os.Exit(1)
+		}
+		if outputFile == "" {
+			fmt.Println(string(jsonData))
+		} else {
+			err := os.WriteFile(outputFile, jsonData, 0o644)
+			if err != nil {
+				fmt.Println("Error writing file:", err)
+				os.Exit(1)
+			}
+			fmt.Println("Written to", outputFile)
+		}
+
+	}
+	if format == "csv" {
+		var writer *csv.Writer
+		if outputFile == "" {
+			writer = csv.NewWriter(os.Stdout)
+		} else {
+			file, err := os.Create(outputFile)
+			if err != nil {
+				fmt.Println("Error creating file:", err)
+				os.Exit(1)
+			}
+			defer file.Close()
+			writer = csv.NewWriter(file)
+		}
+		writer.Write(schema)
+		for _, record := range records {
+			row := []string{}
+			for _, field := range schema {
+				row = append(row, record[field])
+			}
+			writer.Write(row)
+		}
+		writer.Flush()
+	}
 }
